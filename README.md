@@ -12,6 +12,6 @@ Android
 IOS
 Browser
 
-Functions:fileList, renameFile, downloadFile, deleteFile, shareFile
+Functions:fileList, renameFile, downloadFile, deleteFile,createFile, shareFile
 
 
