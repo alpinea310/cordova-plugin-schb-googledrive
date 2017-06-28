@@ -8,10 +8,12 @@ Cordova/Ionic interface to Google-Drive.
 Should enable Business Apps save data in Google-Drive and share data between team members
 
 Devices:
-Android
-IOS
+Android,
+IOS,
 Browser
 
 Functions:fileList, renameFile, downloadFile, deleteFile,createFile, shareFile
+
+Multithread
 
 
