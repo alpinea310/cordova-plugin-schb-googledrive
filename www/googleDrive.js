@@ -4,20 +4,24 @@ GoogleDrive.prototype.downloadFile = function (fileid,successCallback, errorCall
     cordova.exec(successCallback, errorCallback, "GoogleDrive", "downloadFile", [fileid]);
 };
 
-GoogleDrive.prototype.uploadFile = function (fpath,appfolder,successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, "GoogleDrive", "uploadFile", [fpath,appfolder]);
-};
-
 GoogleDrive.prototype.fileList = function (query ,successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, "GoogleDrive", "fileList", [query]);
 };
 
-GoogleDrive.prototype.deleteFile = function (fileid,successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, "GoogleDrive", "deleteFile", [fileid]);
-};
+// GoogleDrive.prototype.deleteFile = function (fileid,successCallback, errorCallback) {
+//     cordova.exec(successCallback, errorCallback, "GoogleDrive", "deleteFile", [fileid]);
+// };
 
 GoogleDrive.prototype.requestSync = function(returnFiles,successCallback,errorCallback){
     cordova.exec(successCallback, errorCallback,"GoogleDrive","requestSync",[returnFiles]);
+};
+
+GoogleDrive.prototype.createFile = function (newFile,successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, "GoogleDrive", "createFile", [newFile]);
+};
+
+GoogleDrive.prototype.renameFile = function (newFile,successCallback, errorCallback) {
+  cordova.exec(successCallback, errorCallback, "GoogleDrive", "renameFile", [newFile]);
 };
 
 GoogleDrive.install = function () {
@@ -30,3 +34,5 @@ GoogleDrive.install = function () {
 };
 
 cordova.addConstructor(GoogleDrive.install);
+
+
