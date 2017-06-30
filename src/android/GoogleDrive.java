@@ -56,7 +56,7 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
 
         if ("downloadFile".equals(action)) {
 
-            String fileId = args.getString(0);
+            String fileId = args.getJSONObject(0).getString("fileId");
             DownloadFile df = new DownloadFile(callbackContext, fileId, this, phaser, googleApiClient);
             cordova.getThreadPool().execute(df);
 

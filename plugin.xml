@@ -15,23 +15,35 @@
     <clobbers target="window.plugins.gdrive"/>
   </js-module>
 
+  <!-- browser -->
+  <platform name="browser">
+    <config-file target="config.xml" parent="/*">
+      <feature name="GoogleDrive">
+        <param name="browser-package" value="ch.schb.cordova.plugin.GoogleDrive" />
+      </feature>
+    </config-file>
+
+    <js-module src="src/browser/GoogleDriveProxy.js" name="GoogleDriveProxy">
+      <runs />
+    </js-module>
+  </platform>
+
   <platform name="android">
     <!--<framework src="com.android.support:appcompat-v7:23.0.1" />-->
     <framework src="com.google.android.gms:play-services-drive:+"/>
 
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="GoogleDrive">
-
         <param name="android-package" value="ch.schb.cordova.plugin.GoogleDrive"/>
       </feature>
     </config-file>
 
     <!--No classes atm-->
-    <source-file src="android/GoogleDrive.java" target-dir="src/ch.schb.cordova.plugin"/>
-    <source-file src="android/CreateFile.java" target-dir="src/ch.schb.cordova.plugin"/>
-    <source-file src="android/DownloadFile.java" target-dir="src/ch.schb.cordova.plugin"/>
-    <source-file src="android/FileList.java" target-dir="src/ch.schb.cordova.plugin"/>
-    <source-file src="android/RenameFile.java" target-dir="src/ch.schb.cordova.plugin"/>
+    <source-file src="src/android/GoogleDrive.java" target-dir="src/ch.schb.cordova.plugin"/>
+    <source-file src="src/android/CreateFile.java" target-dir="src/ch.schb.cordova.plugin"/>
+    <source-file src="src/android/DownloadFile.java" target-dir="src/ch.schb.cordova.plugin"/>
+    <source-file src="src/android/FileList.java" target-dir="src/ch.schb.cordova.plugin"/>
+    <source-file src="src/android/RenameFile.java" target-dir="src/ch.schb.cordova.plugin"/>
   </platform>
 
   <platform name="ios">
@@ -71,8 +83,8 @@
       </array>
     </config-file>
 
-    <header-file src="ios/GoogleDrive.h"/>
-    <source-file src="ios/GoogleDrive.m"/>
+    <header-file src="src/ios/GoogleDrive.h"/>
+    <source-file src="src/ios/GoogleDrive.m"/>
 
   </platform>
 </plugin>

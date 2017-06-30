@@ -99,7 +99,7 @@ public class DownloadFile implements Runnable {
                             }
 
                             try {
-                                JSONObject result1 = new JSONObject().put("fileId", file.getDriveId()).put("driveContent", sb.toString());
+                                JSONObject result1 = new JSONObject(sb.toString());
                                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, result1));
                             } catch (JSONException ex) {
                                 Log.i(TAG, ex.getMessage());
