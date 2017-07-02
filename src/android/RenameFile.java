@@ -18,7 +18,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 import org.json.JSONObject;
 
-import java.util.concurrent.Phaser;
+
 
 /**
  * Created by bernd on 28.06.17.
@@ -30,7 +30,6 @@ public class RenameFile implements Runnable {
     private GoogleDrive googleDrive;
     private CallbackContext callbackContext;
     private GoogleApiClient googleApiClient;
-    private Phaser phaser;
 
     final String fileId;
     final boolean appFolder;
@@ -38,10 +37,9 @@ public class RenameFile implements Runnable {
     final String title;
     final String contentType;
 
-    RenameFile(final CallbackContext callbackContext, String fileId, boolean appFolder, String folderId, String title, String contentType, GoogleDrive googleDrive, Phaser phaser,GoogleApiClient googleApiClient) {
+    RenameFile(final CallbackContext callbackContext, String fileId, boolean appFolder, String folderId, String title, String contentType, GoogleDrive googleDrive,GoogleApiClient googleApiClient) {
         this.callbackContext = callbackContext;
         this.googleDrive = googleDrive;
-        this.phaser = phaser;
         this.googleApiClient =googleApiClient;
 
         this.fileId = fileId;
@@ -56,9 +54,6 @@ public class RenameFile implements Runnable {
         if (googleDrive.connection(this)) {
             renameFile();
         } else {
-            Log.i(TAG, " Action must wait");
-            phaser.register();
-            phaser.arriveAndAwaitAdvance();
             Log.i(TAG, " Action free continue");
             renameFile();
         }

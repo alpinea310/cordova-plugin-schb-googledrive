@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.concurrent.Phaser;
+
 
 /**
  * Created by bernd on 28.06.17.
@@ -29,7 +29,7 @@ public class CreateFile implements Runnable {
     private GoogleDrive googleDrive;
     private CallbackContext callbackContext;
     private GoogleApiClient googleApiClient;
-    private Phaser phaser;
+
 
     final boolean appFolder;
     final String folderId;
@@ -37,11 +37,11 @@ public class CreateFile implements Runnable {
     final String contentType;
     final String data;
 
-    CreateFile(final CallbackContext callbackContext, boolean appFolder, String folderId, String title, String contentType, String data, GoogleDrive googleDrive, Phaser phaser,GoogleApiClient googleApiClient) {
+    CreateFile(final CallbackContext callbackContext, boolean appFolder, String folderId, String title, String contentType, String data, GoogleDrive googleDrive,GoogleApiClient googleApiClient) {
 
         this.callbackContext = callbackContext;
         this.googleDrive = googleDrive;
-        this.phaser = phaser;
+
         this.googleApiClient =googleApiClient;
 
         this.appFolder = appFolder;
@@ -57,9 +57,6 @@ public class CreateFile implements Runnable {
         if (googleDrive.connection(this)) {
             createFile();
         } else {
-            Log.i(TAG, " Action must wait");
-            phaser.register();
-            phaser.arriveAndAwaitAdvance();
             Log.i(TAG, " Action free continue");
             createFile();
         }

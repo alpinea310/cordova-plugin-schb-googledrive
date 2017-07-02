@@ -2,6 +2,11 @@
   "name": "cordova-plugin-schb-googledrive",
   "version": "1.1.0",
   "description": "Cordova Google Drive Plugin",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alpinea310/repository.git"
+  },
+  "license": "MIT",
   "cordova": {
     "id":"cordova-plugin-schb-googledrive",
     "platforms": [
