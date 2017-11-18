@@ -47,8 +47,6 @@
   </platform>
 
   <platform name="ios">
-    <preference name="IOS_CLIENT_ID"/>
-    <preference name="IOS_REVERSED_CLIENT_ID"/>
 
     <dependency id="cordova-plugin-cocoapod-support"/>
 
@@ -69,7 +67,7 @@
           <string>reversedClientId</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string name="reversedClientId">$IOS_REVERSED_CLIENT_ID</string>
+            <string name="reversedClientId"></string>
           </array>
         </dict>
         <dict>
@@ -77,7 +75,7 @@
           <string>clientId</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string name="clientId">$IOS_CLIENT_ID</string>
+            <string name="clientId"></string>
           </array>
         </dict>
       </array>
