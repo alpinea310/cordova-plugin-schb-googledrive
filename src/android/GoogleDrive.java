@@ -21,7 +21,11 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.concurrent.Phaser;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -31,8 +35,8 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
     private static final int REQUEST_CODE_RESOLUTION = 3;
     private GoogleApiClient googleApiClient;
     private CallbackContext callbackContext;
-    private final Phaser phaser = new Phaser(1);
-
+    protected Object phaser;
+    private List waitingAction = Collections.synchronizedList(new ArrayList<Object>());
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -56,8 +60,8 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
 
         if ("downloadFile".equals(action)) {
 
-            String fileId = args.getJSONObject(0).getString("fileId");
-            DownloadFile df = new DownloadFile(callbackContext, fileId, this, phaser, googleApiClient);
+            String fileId = args.getJSONObject(0).getString("id");
+            DownloadFile df = new DownloadFile(callbackContext, fileId, this,  googleApiClient);
             cordova.getThreadPool().execute(df);
 
             return true;
@@ -70,7 +74,7 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
             String contentType = args.getJSONObject(0).getString("contentType");
             String data = args.getJSONObject(0).getString("data");
 
-            CreateFile cf = new CreateFile(callbackContext,appFolder,folderId,title, contentType, data, this, phaser, googleApiClient);
+            CreateFile cf = new CreateFile(callbackContext,appFolder,folderId,title, contentType, data, this, googleApiClient);
             cordova.getThreadPool().execute(cf);
 
             return true;
@@ -83,7 +87,7 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
             String title = args.getJSONObject(0).getString("title");
             String contentType = args.getJSONObject(0).getString("contentType");
 
-            RenameFile rf = new RenameFile(callbackContext, fileId, appFolder, folderId, title, contentType, this, phaser, googleApiClient);
+            RenameFile rf = new RenameFile(callbackContext, fileId, appFolder, folderId, title, contentType, this,  googleApiClient);
             cordova.getThreadPool().execute(rf);
 
             return true;
@@ -95,7 +99,7 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
             boolean trashed = args.getJSONObject(0).getBoolean("trashed");
             boolean withContent = args.getJSONObject(0).getBoolean("withContent");
 
-            FileList fl = new FileList(callbackContext, appFolder, title, trashed, withContent, this, phaser, googleApiClient);
+            FileList fl = new FileList(callbackContext, appFolder, title, trashed, withContent, this,  googleApiClient);
             new Thread(fl).start();
 
             return true;
@@ -107,11 +111,21 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
 
     }
 
-    protected boolean connection(Object actionthread) {
+    protected synchronized boolean connection(Object actionthread) {
         if (googleApiClient.isConnected()) {
             return true;
         } else {
-            googleApiClient.connect();
+           synchronized (actionthread) {
+                phaser = actionthread;
+                googleApiClient.connect();
+                try {
+                    waitingAction.add(actionthread);
+                    Log.i(TAG, " Action must wait");
+                    actionthread.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             return false;
         }
     }
@@ -159,7 +173,13 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.i(TAG, "API client connected.");
-        phaser.arriveAndAwaitAdvance();
+        while (waitingAction.size()>0) {
+            Object ob = waitingAction.get(0);
+            synchronized (ob) {
+                phaser.notify();
+                waitingAction.remove(0);
+            }
+        }
     }
 
     @Override

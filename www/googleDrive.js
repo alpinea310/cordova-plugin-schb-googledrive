@@ -1,38 +1,43 @@
-function GoogleDrive() {}
+var argscheck = require('cordova/argscheck');
+var exec = require('cordova/exec');
 
-GoogleDrive.prototype.downloadFile = function (fileid,successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, "GoogleDrive", "downloadFile", [fileid]);
+var GoogleDrive = {
+
+  getDateNames: function (successCB, failureCB, options) {
+    argscheck.checkArgs('fFO', 'GoogleDrive.getDateNames', arguments);
+    exec(successCB, failureCB, "GoogleDrive", "getDateNames", [{"options": options}]);
+  },
+
+  downloadFile: function (successCB, failureCB, fileid) {
+    argscheck.checkArgs('fFO', 'GoogleDrive.downloadFile', arguments);
+    cordova.exec(successCB, failureCB, "GoogleDrive", "downloadFile", [fileid]);
+  },
+
+  fileList: function (successCB, failureCB, query) {
+    argscheck.checkArgs('fFO', 'GoogleDrive.fileList', arguments);
+    cordova.exec(successCB, failureCB, "GoogleDrive", "fileList", [query]);
+  },
+
+  deleteFile: function (successCB, failureCB, fileid) {
+    argscheck.checkArgs('fFO', 'GoogleDrive.deleteFile', arguments);
+    cordova.exec(successCB, failureCB, "GoogleDrive", "deleteFile", [fileid]);
+  },
+
+  requestSync: function (successCB, failureCB, returnFiles) {
+    argscheck.checkArgs('fFO', 'GoogleDrive.requestSync', arguments);
+    cordova.exec(successCB, failureCB, "GoogleDrive", "requestSync", [returnFiles]);
+  },
+
+  createFile: function (successCB, failureCB, newFile) {
+    argscheck.checkArgs('fFO', 'GoogleDrive.createFile', arguments);
+    cordova.exec(successCB, failureCB, "GoogleDrive", "createFile", [newFile]);
+  },
+
+  renameFile: function (successCB, failureCB, newFile) {
+    argscheck.checkArgs('fFO', 'GoogleDrive.renameFile', arguments);
+    cordova.exec(successCB, failureCB, "GoogleDrive", "renameFile", [newFile]);
+  }
+
 };
 
-GoogleDrive.prototype.fileList = function (query ,successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, "GoogleDrive", "fileList", [query]);
-};
-
-// GoogleDrive.prototype.deleteFile = function (fileid,successCallback, errorCallback) {
-//     cordova.exec(successCallback, errorCallback, "GoogleDrive", "deleteFile", [fileid]);
-// };
-
-GoogleDrive.prototype.requestSync = function(returnFiles,successCallback,errorCallback){
-    cordova.exec(successCallback, errorCallback,"GoogleDrive","requestSync",[returnFiles]);
-};
-
-GoogleDrive.prototype.createFile = function (newFile,successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, "GoogleDrive", "createFile", [newFile]);
-};
-
-GoogleDrive.prototype.renameFile = function (newFile,successCallback, errorCallback) {
-  cordova.exec(successCallback, errorCallback, "GoogleDrive", "renameFile", [newFile]);
-};
-
-GoogleDrive.install = function () {
-    if (!window.plugins) {
-        window.plugins = {};
-    }
-
-    window.plugins.gdrive = new GoogleDrive();
-    return window.plugins.gdrive;
-};
-
-cordova.addConstructor(GoogleDrive.install);
-
-
+module.exports = GoogleDrive;
