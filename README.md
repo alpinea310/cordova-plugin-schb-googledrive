@@ -15,3 +15,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 This Plugin allow save and read data in Google Drive
 
 ## Usage
+
+index.xy page add
+ <script src = "https://apis.google.com/js/client.js"></script>
+ 
+ global javascript const
+ GOOGLE_ACCOUNT = 
+ var GOOGLE_ACCOUNT = {
+ 		  'client_id': 'xxxxxxxxxxxyour number.apps.googleusercontent.com',
+ 		  'immediate': false,
+ 		  'scope': 'https://www.googleapis.com/auth/drive'
+ 		};
